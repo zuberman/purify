@@ -151,16 +151,25 @@ function swapKeysAndValues(stuff){
 // Hint: this function has a bug that needs fixing
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
 function parseDates(dates){
-  for(var i = 0; i < dates.length; i++){
-    var dateParts = dates[i].split('-');
 
-    var year = parseInt(dateParts[0]);
-    var month = parseInt(dateParts[1]);
-    var date = parseInt(dateParts[2]);
+  const datesCopy = dates.map(date => {
+    let newDateFormat = new Date(date);
+    let monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    function dateNames(date){
+      if (date===1 || date===21 ||date ===31){
+        return "st";
+      } else if (date ===2 || date === 22){
+        return "nd";
+      } else if(date===3||date===23){
+        return "rd";
+      } else {
+        return "th";
+      }
+    }
+    return `${newDateFormat.getDate()}${dateNames(newDateFormat.getDate())} ${monthNames[newDateFormat.getMonth()]} ${newDateFormat.getFullYear()}`
+  })
 
-    dates[i] = new Date(year, month, date);
-  }
-  return dates;
+  return datesCopy;
 }
 
 module.exports = {
@@ -188,7 +197,7 @@ module.exports = {
 // [ [0, 7], [1, 4], [3, 10] ]
 
 // The function should output an array of objects which
-// contain statistics calculated for each a set of prices
+// contain statistics calculated for each set of prices
 // as indicated by the corresponding array of indexes.
 
 // [{

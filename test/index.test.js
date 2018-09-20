@@ -278,9 +278,9 @@ test("swapKeysAndValues2", function(){
 
 
 test("parseDates",function(){
-  const dates = ['2018-02-12','2018-01-11','1999-12-31'];
-  const expectedDates = ['2018-02-12','2018-01-11','1999-12-31'];
-  const expectedOutput = [{12th Feb 2018},'2018-01-11','1999-12-31']?
+  const dates = ['2018-02-2','2018-01-11','1999-12-31'];
+  const expectedDates = ['2018-02-2','2018-01-11','1999-12-31'];
+  const expectedOutput = ["2nd Feb 2018",'11th Jan 2018','31st Dec 1999'];
   const output = functions.parseDates(dates);
   expect(output).toEqual(expectedOutput);
   expect(dates).toEqual(expectedDates);
