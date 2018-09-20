@@ -1,19 +1,24 @@
 // numbers is an array of numbers. Multiply all
 // numbers contained in array by multiplier
 function multiply(numbers, multiplier){
-  for(var i = 0; i < numbers.length; i++){
-    numbers[i] = numbers[i] * multiplier;
-  }
-
-  return numbers;
+    const output = numbers.map(function(number){
+      return number*multiplier;
+    })
+    return output;
 }
 
 // is an array of positive and negative numbers
 // make them all absolute numbers
 function absolute(numbers){
-  for(var i = 0; i < numbers.length; i++){
-    numbers[i] = +numbers[i];
-  }
+  const output = numbers.map(number => {
+    if (number<0){
+      return -number;
+    } else {
+      return number;
+    }
+  })
+  return output;
+
 }
 // names is an array of name of nameObjects
 // {
@@ -23,31 +28,37 @@ function absolute(numbers){
 // concatenate first and last names and return
 // resulting array of names
 function concatNames(names){
-  for(var i = 0; i < names.length; i++){
-    names[i] = `${names[i].firstName} ${names[i].lastName}`;
-  }
-  return names;
+  const concatName = names.map(name => {
+    const nameCopy = Object.assign({}, name);
+    return `${nameCopy.firstName}${nameCopy.lastName}`
+  })
+  return concatName;
 }
 
 // things is an array of numbers and strings. Convert
 // numbers in array to strings. For example 5 to "5"
 function numbersToStrings(things){
-  for(var i = 0; i < things.length; i++){
-    things[i] = typeof things[i] === 'number' ? things[i]+'' : things[i];
-  }
+  const newStrings = things.map(thing =>{
+    return thing.toString();
+  })
+  return newStrings;
+
 }
 
 // strings is an array of strings. sort them by length
 function sortByLength(strings){
-  strings.sort(function(a,b){
+  const copyStrings = [...strings]
+  copyStrings.sort(function(a,b){
     return a.length - b.length;
   });
+  return copyStrings;
 }
 
 // numbers is an array of numbers. Get last two numbers
 // from numbers
 function lastTwo(numbers){
-  return numbers.splice(-2);
+  const copyNumbers = [...numbers];
+  return copyNumbers.splice(-2);
 }
 
 // cars is an array of car objects which look like
@@ -59,11 +70,12 @@ function lastTwo(numbers){
 // }
 // increment the years by one year for all cars
 function incrementYear(cars){
-  for(var i = 0; i < cars.length; i++){
-    cars[i].year++;
+  const incremented = cars.map(car => {
+    return Object.assign({}, car, {year: car.year + 1});
+  })
+    return incremented;
   }
-  return cars;
-}
+
 
 // sales is an object where the key is
 // the salespersons name and the value
@@ -75,16 +87,37 @@ function incrementYear(cars){
 //   Dave: [43, 2, 12]
 // }
 function totalSales( sales ){
-  Object.keys(sales).forEach(function(key){
-    let total = 0;
+  let salesCopy = Object.assign({},sales)
+  let output = {}
+  Object.keys(salesCopy).forEach(salesPerson =>{
+      let personTotal = salesCopy[salesPerson].reduce((acc, number) =>{
+        return acc + number;
+      },0)
+    salesCopy[salesPerson] = personTotal
+    })
+    return salesCopy;
+  }
 
-    for(var i = 0; i < sales[key].length; i++){
-      total = total + sales[key][i];
-    }
 
-    sales[key] = total;
-  });
-}
+
+  // for (let i=0; Object.keys(salesCopy).length;i++){
+  //   salesCopy[i].reduce
+
+
+  //
+  // Object.keys(sales).forEach(function(key){
+  //   let total = 0;
+  //
+  //   for(var i = 0; i < sales[key].length; i++){
+  //     total = total + sales[key][i];
+  //   }
+  //
+  //   sales[key] = total;
+  // });
+// }
+
+
+
 // stuff is an object with string keys and
 // string values. All keys and values are unique
 // Swap keys and values around, so that keys
@@ -94,14 +127,22 @@ function totalSales( sales ){
 //   c: 'd'
 // }
 function swapKeysAndValues(stuff){
-  Object.keys(stuff).forEach(function(key){
-    const value = stuff[key];
-    stuff[value] = key;
-    delete stuff[key];
+  let stuffCopy = Object.assign({}, stuff)
+  Object.keys(stuffCopy).forEach(function(key){
+    const value = stuffCopy[key];
+    stuffCopy[value] = key;
+    delete stuffCopy[key];
+  //
+  // Object.keys(stuff).forEach(function(key){
+  //   const value = stuff[key];
+  //   stuff[value] = key;
+  //   delete stuff[key];
   });
 
-  return stuff;
+  return stuffCopy;
 }
+
+
 
 // dates is an array of dates in string format
 // 'yyyy-mm-dd' convert dates to date object.
@@ -120,6 +161,19 @@ function parseDates(dates){
     dates[i] = new Date(year, month, date);
   }
   return dates;
+}
+
+module.exports = {
+  multiply,
+  absolute,
+  concatNames,
+  numbersToStrings,
+  sortByLength,
+  lastTwo,
+  incrementYear,
+  totalSales,
+  swapKeysAndValues,
+  parseDates
 }
 
 // Stretch goal
